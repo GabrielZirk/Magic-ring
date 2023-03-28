@@ -119,7 +119,7 @@ function generateMagicRing() {
     size: params.particleSize,
     blending: THREE.AdditiveBlending,
     sizeAttenuation: true,
-    depthWrite: false,
+    depthWrite: true,
     transparent: true,
     alphaMap: particleTexture,
 
@@ -135,15 +135,15 @@ const gui = new GUI();
 gui.add(params, 'numParticles').min(100).max(200000).step(10000).name("Particle number").onFinishChange(generateMagicRing);
 gui.add(params, 'ringRadius').min(1).max(10).step(1).name("Ring radius").onFinishChange(generateMagicRing);
 gui.add(params, 'particleSize').min(0.005).max(0.1).step(0.001).name("Particle size").onFinishChange(generateMagicRing);
-gui.add(params, 'globalnoiseScale').min(0.0001).max(0.05).step(0.001).name("Global Noise scale");
+gui.add(params, 'globalnoiseScale').min(0.0001).max(0.05).step(0.001).name("Global Noise scale").onFinishChange(generateMagicRing);
 gui.add(params, 'circleThickness').min(0.1).max(1).step(0.1).name("Circle thickness").onFinishChange(generateMagicRing);
 gui.add(params, 'noiseScaleX').min(0.1).max(10).step(0.5).name("Noise scale x").onFinishChange(generateMagicRing);
-gui.add(params, 'noiseScaleY').min(0.1).max(10).step(0.5).name("Noise scale x").onFinishChange(generateMagicRing);
-gui.add(params, 'noiseScaleZ').min(0.1).max(10).step(0.5).name("Noise scale x").onFinishChange(generateMagicRing);
+gui.add(params, 'noiseScaleY').min(0.1).max(10).step(0.5).name("Noise scale Y").onFinishChange(generateMagicRing);
+gui.add(params, 'noiseScaleZ').min(0.1).max(10).step(0.5).name("Noise scale Z").onFinishChange(generateMagicRing);
 gui.add(controls, 'autoRotateSpeed').min(0).max(10).step(0.5).name("Autorotate speed");
 gui.add(params, 'speedFactor').min(0.1).max(10).step(0.5).name("Speed factor");
 gui.add(particlesMaterial, 'depthWrite').name("Depth write");
-gui.add(particlesMaterial, 'blending').min(0).max(6).step(1).name("Blending")
+gui.add(particlesMaterial, 'blending').min(0).max(5).step(1).name("Blending")
 
 function animate() {
 
