@@ -8,12 +8,12 @@ import { CanvasCapture } from 'canvas-capture';
  * Capturer
  */
 var capturer = new CCapture({
-  framerate: 40,
+  framerate: 60,
   verbose: true,
   format: 'webm',
   display: true,
   name: 'Magic_Ring',
-  quality: 100,
+  quality: 50,
 });
 
 /**
@@ -28,9 +28,21 @@ const params = {
   noiseScaleX: 1,
   noiseScaleY: 1,
   noiseScaleZ: 1,
-  running: true,
   speedFactor: 1,
+  depthWrite: true,
 }
+
+// const params = {
+//   numParticles: 100000,
+//   ringRadius: 2,
+//   particleSize: 0.03,
+//   globalnoiseScale: 0.005,
+//   circleThickness: 0.7,
+//   noiseScaleX: 1,
+//   noiseScaleY: 1,
+//   noiseScaleZ: 1,
+//   speedFactor: 1,
+// }
 
 /**
  * Noise
@@ -69,7 +81,7 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
  * Orbitcontrols
  */
 const controls = new OrbitControls(camera, renderer.domElement);
-camera.position.set(2, 2, 4);
+camera.position.set(2, 2, 8);
 controls.autoRotate = true;
 controls.autoRotateSpeed = 4.0;
 controls.enableDamping = true;
@@ -119,7 +131,7 @@ function generateMagicRing() {
     size: params.particleSize,
     blending: THREE.AdditiveBlending,
     sizeAttenuation: true,
-    depthWrite: true,
+    depthWrite: params.depthWrite,
     transparent: true,
     alphaMap: particleTexture,
 
@@ -135,15 +147,14 @@ const gui = new GUI();
 gui.add(params, 'numParticles').min(100).max(200000).step(10000).name("Particle number").onFinishChange(generateMagicRing);
 gui.add(params, 'ringRadius').min(1).max(10).step(1).name("Ring radius").onFinishChange(generateMagicRing);
 gui.add(params, 'particleSize').min(0.005).max(0.1).step(0.001).name("Particle size").onFinishChange(generateMagicRing);
-gui.add(params, 'globalnoiseScale').min(0.0001).max(0.05).step(0.001).name("Global Noise scale").onFinishChange(generateMagicRing);
+gui.add(params, 'globalnoiseScale').min(0.0001).max(0.05).step(0.001).name("Global Noise scale")
 gui.add(params, 'circleThickness').min(0.1).max(1).step(0.1).name("Circle thickness").onFinishChange(generateMagicRing);
 gui.add(params, 'noiseScaleX').min(0.1).max(10).step(0.5).name("Noise scale x").onFinishChange(generateMagicRing);
 gui.add(params, 'noiseScaleY').min(0.1).max(10).step(0.5).name("Noise scale Y").onFinishChange(generateMagicRing);
 gui.add(params, 'noiseScaleZ').min(0.1).max(10).step(0.5).name("Noise scale Z").onFinishChange(generateMagicRing);
-gui.add(controls, 'autoRotateSpeed').min(0).max(10).step(0.5).name("Autorotate speed");
-gui.add(params, 'speedFactor').min(0.1).max(10).step(0.5).name("Speed factor");
-gui.add(particlesMaterial, 'depthWrite').name("Depth write");
-gui.add(particlesMaterial, 'blending').min(0).max(5).step(1).name("Blending")
+gui.add(controls, 'autoRotateSpeed').min(0).max(10).step(0.5).name("Autorotate speed").onFinishChange(generateMagicRing);;
+gui.add(params, 'speedFactor').min(0.1).max(10).step(0.5).name("Speed factor").onFinishChange(generateMagicRing);
+gui.add(params, 'depthWrite').name("Depth write").onFinishChange(generateMagicRing);
 
 function animate() {
 
